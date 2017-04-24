@@ -1,0 +1,220 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="https://github.com/ianstormtaylor/metascraper#readme"
+
+    >metascraper (v1.0.6)</a>
+</h1>
+<h4>A library to easily scrape metadata from an article on the web using Open Graph metadata, regular HTML metadata, and series of fallbacks.</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.metascraper">module metascraper</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.metascraper.scrapeHtml">
+            function <span class="apidocSignatureSpan">metascraper.</span>scrapeHtml
+            <span class="apidocSignatureSpan">(html, rules)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.metascraper.scrapeUrl">
+            function <span class="apidocSignatureSpan">metascraper.</span>scrapeUrl
+            <span class="apidocSignatureSpan">(url, rules)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.metascraper.scrapeWindow">
+            function <span class="apidocSignatureSpan">metascraper.</span>scrapeWindow
+            <span class="apidocSignatureSpan">(window, rules)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">metascraper.</span>RULES</span>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.metascraper" id="apidoc.module.metascraper">module metascraper</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.metascraper.scrapeHtml" id="apidoc.element.metascraper.scrapeHtml">
+        function <span class="apidocSignatureSpan">metascraper.</span>scrapeHtml
+        <span class="apidocSignatureSpan">(html, rules)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function scrapeHtml(html, rules) {
+  return scrapeMetadata(html, &#x27;&#x27;, rules);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+const metadata = await Metascraper.scrapeUrl(&#x27;http://www.bloomberg.com/news/articles/2016-05-24/as-zenefits-stumbles-gusto-
+goes-head-on-by-selling-insurance&#x27;)
+```
+
+
+Similarly, if you already have the `html` downloaded, you can use the `scrapeHtml` method instead:
+
+```js
+const metadata = await Metascraper.<span class="apidocCodeKeywordSpan">scrapeHtml</span>(html)
+```
+
+That&#x27;s it! If you want to customize what exactly gets scraped, check out the documention on [the rules system](#rules).
+
+
+## Browser-side Usage
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.metascraper.scrapeUrl" id="apidoc.element.metascraper.scrapeUrl">
+        function <span class="apidocSignatureSpan">metascraper.</span>scrapeUrl
+        <span class="apidocSignatureSpan">(url, rules)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function scrapeUrl(url, rules) {
+  var request = popsicle.request({
+    url: url,
+    options: {
+      jar: process.browser ? null : popsicle.jar()
+    }
+  });
+
+  return request.then(function (res) {
+    return scrapeMetadata(res.body, url, rules);
+  });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+On the server, you&#x27;re typically going to only have a `url` to scrape, or already have the `html` downloaded. Here&#x27;s what
+ a simple use case might look like:
+
+```js
+import Metascraper from &#x27;metascraper&#x27;
+
+Metascraper
+  .<span class="apidocCodeKeywordSpan">scrapeUrl</span>(&#x27;http://www.bloomberg.com/news/articles/2016-05-24/as-zenefits-stumbles
+-gusto-goes-head-on-by-selling-insurance&#x27;)
+  .then((metadata) =&#x3e; {
+    console.log(metadata)
+  })
+
+// {
+//   &#x22;author&#x22;: &#x22;Ellen Huet&#x22;,
+//   &#x22;date&#x22;: &#x22;2016-05-24T18:00:03.894Z&#x22;,
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.metascraper.scrapeWindow" id="apidoc.element.metascraper.scrapeWindow">
+        function <span class="apidocSignatureSpan">metascraper.</span>scrapeWindow
+        <span class="apidocSignatureSpan">(window, rules)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function scrapeWindow(window, rules) {
+  var html = window.document.documentElement.outerHTML;
+  var url = window.location.href;
+  return scrapeMetadata(html, url, rules);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+In the browser, for example inside of a Chrome extension, you might already have access to the `window` of the document you&#x27
+;d like to scrape. You can simply use the `scrapeWindow` method to get the metadata:
+
+```js
+import Metascraper from &#x27;metascraper&#x27;
+
+Metascraper
+  .<span class="apidocCodeKeywordSpan">scrapeWindow</span>(window)
+  .then((metadata) =&#x3e; {
+    console.log(metadata)
+  })
+
+// {
+//   &#x22;author&#x22;: &#x22;Ellen Huet&#x22;,
+//   &#x22;date&#x22;: &#x22;2016-05-24T18:00:03.894Z&#x22;,
+...</pre></li>
+    </ul>
+
+
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
